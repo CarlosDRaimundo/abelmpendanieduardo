@@ -1,0 +1,112 @@
+#include <stdio.h>
+void imprime_tabuleiro(char tabuleiro[3][3]) {
+    printf("\n\n");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf(" %c ", tabuleiro[i][j]);
+            if (j < 2) {
+                printf("|"); // barra vertical para separar as colunas
+            }
+        }
+        if (i < 2) {
+            printf("\n---|---|---\n"); // barra horizontal para separar as linhas
+        }
+    }
+    printf("\n\n");
+}
+
+// função que verifica se alguém ganhou o jogo
+char verifica_ganhador(char tabuleiro[3][3]) {
+    char vencedor = '\0';
+    // verificar linhas
+    for (int i = 0; i < 3; i++) {
+        if ((tabuleiro[i][0] == tabuleiro[i][1]) && (tabuleiro[i][1] == tabuleiro[i][2])) {
+            vencedor = tabuleiro[i][0];
+            break;
+        }
+    }
+    // verificar colunas
+    if (!vencedor) {
+        for (int i = 0; i < 3; i++) {
+            if ((tabuleiro[0][i] == tabuleiro[1][i]) && (tabuleiro[1][i] == tabuleiro[2][i])) {
+                vencedor = tabuleiro[0][i];
+                break;
+            }
+        }
+    }
+    // verificar diagonais
+    if (!vencedor) {
+        if ((tabuleiro[0][0] == tabuleiro[1][1]) && (tabuleiro[1][1] == tabuleiro[2][2])) {
+            vencedor = tabuleiro[0][0];
+        } else if ((tabuleiro[0][2] == tabuleiro[1][1]) && (tabuleiro[1][1] == tabuleiro[2][0])) {
+            vencedor = tabuleiro[0][2];
+        }
+    }
+    return vencedor;
+}
+
+int main() {
+    char tabuleiro[3][3] = {
+        {'1', '2', '3'},
+        {'4', '5', '6'},
+        {'7', '8', '9'}
+    }; // tabuleiro inicial (números de 1 a 9)
+    int jogada;
+    char jogador = 'X';
+    char vencedor = '\0';
+    int total_jogadas = 0;
+
+    do {
+        imprime_tabuleiro(tabuleiro);
+        printf("Jogador %c, escolha uma casa (1-9): ", jogador);
+        scanf("%d", &jogada);
+
+        int linha = (jogada - 1) / 3;
+        int coluna = (jogada - 1) % 3;
+
+        if (tabuleiro[linha][coluna] != 'X' && tabuleiro[linha][coluna] != 'O') {
+            tabuleiro[linha][coluna] = jogador;
+            total_jogadas++;
+            if (jogador == 'X') {
+                jogador = 'O';
+            } else {
+                jogador = 'X';
+            }
+            vencedor = verifica_ganhador(tabuleiro);
+        } else {
+            printf("Jogada inválida. Tente novamente.\n");
+        }
+    } while (!vencedor && total_jogadas < 9);
+
+    imprime_tabuleiro(tabuleiro);
+
+    if (vencedor) {
+        printf("Jogador %c venceu!\n", vencedor);
+    } else {
+        printf("Empate!\n");
+    }
+
+    return 0;
+}
+/* IG11A
+Carlos Raimundo n°4
+Celso Huma n°5
+Cristiano de Carvalho n°7
+Domilde Manuel n°8
+Engrácia Nsambo n°9
+Gabriel Tacanho n°13
+Ismael Sunda n. °15
+Jano Bernardo n°17
+José Mariche n°18
+Kete Victor n°22
+Miller Gil n°28
+Mónica Tchibi n°29
+Nazaré Neves n°30
+Hélio Diogo n°38
+Relatório:
+
+  Somos o grupo n°2, e assim como os outros grupos, nos foi orientado fazer ou construir um Projeto, no qual deveria apresentar o jogo da velha. Começámos por idealizar mais ou menos como o jogo da velha funciona na vida real, e depois cada um executou o seu próprio programa em sua casa. Depois de feito, cada integrante enviou no grupo criado para melhor comunicação, o seu programa e juntos, analisamos a semântica e a sintaxe do mesmo. Aplicamos uma dinâmica, à nosso critério, que foi escolher um programa com menos linhas de código mas com uma lógica excelente, no qual, este. 
+   
+    Sobre o projecto, primeiro começámos por construir a tabela para os jogadores poderem jogar, declarando as duas estruturas de repetição e  duas condições. Conseguimos implementar barras verticais para separar as colunas e barras horizontais para separar as linhas. Em seguida, criamos uma função para verificar se há um vencedor no jogo, primeiro nas linhas, segundo nas colunas,  e terceiro nas diagonais (principal e secundária) e depois apresentamos o vencedor. 
+ De seguida, pedimos para o usuário digitar uma casa(de 1 à 9), e o programa converte a jogada em coordenadas no tabuleiro. Depois, introduzimos estruturas condicionais para o programa poder trocar de jogador, ou seja, digitar X ou O. E para terminar, verificamos o vencedor, onde o programa imprime na tela a mensagem "Vitória" para o caso de vitória, e "Empate" para o caso de empate.
+*/
